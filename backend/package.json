@@ -1,28 +1,45 @@
 {
-  "name": "school-mgmt-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "argon2": "^0.40.3",
-    "axios": "^1.4.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-async-handler": "^1.2.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.12.0",
-    "request": "^2.88.2",
-    "resend": "^4.0.0",
-    "sqlite3": "^5.1.7",
-    "uuid": "^10.0.0",
-    "zod": "^3.23.8"
-  }
+    "name": "school-mgmt-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./src/server.js",
+        "dev": "node ./src/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "blockchain:compile": "npx hardhat compile",
+        "blockchain:deploy": "npx hardhat run scripts/deploy-hardhat.js --network sepolia",
+        "blockchain:deploy-local": "npx hardhat run scripts/deploy-hardhat.js",
+        "blockchain:verify": "npx hardhat run scripts/check-balance.js --network sepolia",
+        "blockchain:test": "npx hardhat run scripts/test-contract.js --network sepolia"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "argon2": "^0.40.3",
+        "axios": "^1.10.0",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.4.5",
+        "ethers": "^5.7.2",
+        "express": "^4.19.2",
+        "express-async-handler": "^1.2.0",
+        "form-data": "^4.0.3",
+        "jsonwebtoken": "^9.0.2",
+        "multer": "^1.4.5-lts.1",
+        "pg": "^8.12.0",
+        "request": "^2.88.2",
+        "resend": "^4.0.0",
+        "sqlite3": "^5.1.7",
+        "uuid": "^10.0.0",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@nomiclabs/hardhat-ethers": "^2.2.3",
+        "@nomiclabs/hardhat-waffle": "^2.0.6",
+        "chai": "^4.3.7",
+        "ethereum-waffle": "^4.0.10",
+        "hardhat": "^2.17.0"
+    }
 }

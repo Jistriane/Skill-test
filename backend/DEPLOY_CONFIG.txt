@@ -1,0 +1,82 @@
+# 🚀 CONFIGURAÇÃO PARA DEPLOY DO CONTRATO
+# ==========================================
+# Preencha os campos abaixo e depois copie para o arquivo .env
+
+# 1. CHAVE PRIVADA DA METAMASK (sem 0x no início)
+# Como obter: MetaMask → 3 pontos → Detalhes da conta → Exportar chave privada
+BLOCKCHAIN_PRIVATE_KEY=dee48a8e9eba993a7b7753e916fa21c75dbe3e5a52a04bf41d10cc4254047769
+
+# 2. RPC URL - ESCOLHA UMA OPÇÃO:
+
+# OPÇÃO A: INFURA (Recomendado - gratuito)
+# 1. Acesse: https://infura.io
+# 2. Crie conta → Novo projeto → Copie endpoint Sepolia
+# 3. Cole aqui:
+BLOCKCHAIN_RPC_URL=https://sepolia.infura.io/v3/SEU_PROJECT_ID
+
+# OPÇÃO B: ALCHEMY
+# 1. Acesse: https://alchemy.com  
+# 2. Crie projeto Sepolia → Copie API URL
+# 3. Cole aqui:
+# BLOCKCHAIN_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/61Zd4evHrQL88jxDE0WWi
+
+# OPÇÃO C: RPC PÚBLICO (sem garantias)
+# BLOCKCHAIN_RPC_URL=https://rpc.sepolia.org
+
+# 3. CONFIGURAÇÕES FIXAS (não alterar)
+BLOCKCHAIN_NETWORK=sepolia
+CERTIFICATE_CONTRACT_ADDRESS=0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9
+
+# ==========================================
+# PRÓXIMOS PASSOS:
+# ==========================================
+# 1. Preencha BLOCKCHAIN_PRIVATE_KEY
+# 2. Preencha BLOCKCHAIN_RPC_URL  
+# 3. Obtenha ETH Sepolia em: https://sepoliafaucet.com
+# 4. Copie estas configurações para o arquivo .env
+# 5. Execute: npm run blockchain:deploy
+# ==========================================
+
+# 💰 FAUCETS PARA ETH SEPOLIA (GRATUITO):
+# https://sepoliafaucet.com
+# https://faucet.sepolia.dev
+# https://sepolia-faucet.pk910.de
+# Precisa de ~0.01 ETH para deploy 
+
+# 🎉 DEPLOY REALIZADO COM SUCESSO!
+
+## ✅ Informações do Contrato Deployado:
+
+- **Endereço do Contrato**: `0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9`
+- **Transaction Hash**: `0xfc3b6335888b5ed28c12acde4143301eba6bc3ba983910477abe28e1d2fdcb0b`
+- **Rede**: Sepolia Testnet
+- **Proprietário**: `0xFE36288a99141E0C72F67E8116272fA8Aeb66F8A`
+- **Custo do Deploy**: ~0.0136 ETH
+
+## 🔗 Links Importantes:
+
+- **Etherscan**: https://sepolia.etherscan.io/address/0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9
+- **Transação**: https://sepolia.etherscan.io/tx/0xfc3b6335888b5ed28c12acde4143301eba6bc3ba983910477abe28e1d2fdcb0b
+
+## 📝 Próximos Passos:
+
+1. **Adicionar endereço no .env**:
+   ```
+   CERTIFICATE_CONTRACT_ADDRESS=0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9
+   ```
+
+2. **O sistema backend já está configurado** para usar este contrato
+
+3. **Testar o contrato** (opcional):
+   ```bash
+   npx hardhat run scripts/test-contract.js --network sepolia
+   ```
+
+## 🎯 Status Final:
+
+- ✅ Smart Contract deployado na Sepolia
+- ✅ Endereço confirmado na blockchain
+- ✅ Backend pronto para usar o contrato
+- ✅ Sistema de certificados blockchain operacional
+
+**O deploy foi concluído com sucesso! O sistema de certificados blockchain está agora ativo na rede Sepolia.** 🚀 

@@ -1,499 +1,274 @@
-# Backend - Student Management System API
+# Sistema de Gestão Escolar - Backend
 
-A robust Node.js REST API built with Express.js and PostgreSQL for managing school operations with comprehensive authentication, authorization, and CRUD operations.
+Backend para sistema de gestão escolar com funcionalidades de certificados blockchain.
 
-## 🚀 Quick Start
+## 🚀 Funcionalidades
 
-### Prerequisites
-- Node.js (v16 or higher)
-- PostgreSQL (v12 or higher)
-- npm or yarn
+### Sistema Principal
+- Autenticação e autorização
+- Gestão de usuários (alunos, professores, funcionários)
+- Controle de acesso baseado em roles
+- Notificações e avisos
+- Dashboard administrativo
 
-### Installation & Setup
+### 🔗 Sistema de Certificados Blockchain (NOVO!)
+- **Emissão de certificados na blockchain Ethereum (Sepolia)**
+- **Verificação de autenticidade descentralizada**
+- **Armazenamento de metadados em IPFS**
+- **Sistema de aprovação em duas etapas**
+- **Auditoria completa de transações**
+
+## 📋 Pré-requisitos
+
+- Node.js 16+
+- PostgreSQL 12+
+- npm ou yarn
+- **Carteira Ethereum com ETH Sepolia (para certificados)**
+- **Acesso à rede Sepolia**
+
+## 🛠️ Instalação
+
+1. Clone o repositório
 ```bash
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your configuration
-
-# Set up database
-createdb school_mgmt
-psql -d school_mgmt -f ../seed_db/tables.sql
-psql -d school_mgmt -f ../seed_db/seed-db.sql
-
-# Start the server
-npm start
+git clone <repository-url>
+cd skill-test/backend
 ```
 
-### Environment Configuration
-Create a `.env` file with the following variables:
+2. Instale as dependências
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente
+```bash
+cp .env-example .env
+# Edite o arquivo .env com suas configurações
+```
+
+4. Configure o banco de dados
+```bash
+# Execute o schema principal
+psql -d sua_database -f ../seed_db/tables.sql
+
+# Execute o schema de certificados
+psql -d sua_database -f database/certificates-schema-fixed.sql
+
+# Dados iniciais (opcional)
+psql -d sua_database -f ../seed_db/seed-db.sql
+```
+
+## ⚙️ Configuração
+
+### Variáveis de Ambiente Principais
+
 ```env
-PORT=5007
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/school_mgmt
-JWT_ACCESS_TOKEN_SECRET=your_access_token_secret
-JWT_REFRESH_TOKEN_SECRET=your_refresh_token_secret
-CSRF_TOKEN_SECRET=your_csrf_secret
-JWT_ACCESS_TOKEN_TIME_IN_MS=900000
-JWT_REFRESH_TOKEN_TIME_IN_MS=28800000
-CSRF_TOKEN_TIME_IN_MS=950000
-MAIL_FROM_USER=your-email@domain.com
-EMAIL_VERIFICATION_TOKEN_SECRET=your_email_verification_secret
-EMAIL_VERIFICATION_TOKEN_TIME_IN_MS=18000000
-PASSWORD_SETUP_TOKEN_TIME_IN_MS=300000
-PASSWORD_SETUP_TOKEN_SECRET=your_password_setup_secret
-UI_URL=http://localhost:5173
-API_URL=http://localhost:5007
-COOKIE_DOMAIN=localhost
+# Servidor
+PORT=3001
+NODE_ENV=development
+
+# Banco de dados
+DATABASE_URL=postgresql://user:password@localhost:5432/database_name
+
+# JWT
+JWT_ACCESS_TOKEN_SECRET=your_secret_here
+JWT_REFRESH_TOKEN_SECRET=your_refresh_secret_here
+
+# Email
 RESEND_API_KEY=your_resend_api_key
 ```
 
-## 🛠️ Technology Stack
+### 🔗 Configuração Blockchain (Certificados)
 
-### Core Technologies
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web application framework
-- **PostgreSQL** - Primary database
-- **JWT** - Authentication tokens
-- **Argon2** - Password hashing
+```env
+# Blockchain
+BLOCKCHAIN_NETWORK=sepolia
+BLOCKCHAIN_RPC_URL=https://sepolia.infura.io/v3/YOUR_PROJECT_ID
+BLOCKCHAIN_PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+CERTIFICATE_CONTRACT_ADDRESS=0xYOUR_CONTRACT_ADDRESS
 
-### Key Dependencies
-- **express-async-handler** - Async error handling
-- **cors** - Cross-origin resource sharing
-- **cookie-parser** - Cookie parsing middleware
-- **dotenv** - Environment variable management
-- **pg** - PostgreSQL client
-- **uuid** - UUID generation
-- **zod** - Runtime type validation
-- **resend** - Email service
+# IPFS
+IPFS_GATEWAY=https://ipfs.io/ipfs/
+IPFS_API_URL=https://ipfs.infura.io:5001
 
-## 📁 Project Structure
+# Configurações de certificados
+CERTIFICATE_ISSUER_NAME=Sua Instituição
+CERTIFICATE_TEMPLATE_URL=https://yoursite.com/certificate-template
+```
 
+## 🚀 Executar
+
+### Desenvolvimento
+```bash
+npm run dev
+```
+
+### Produção
+```bash
+npm start
+```
+
+### Deploy do Smart Contract
+```bash
+node scripts/deploy-contract.js
+```
+
+## 📊 API Endpoints
+
+### Autenticação
+- `POST /api/v1/auth/login` - Login
+- `POST /api/v1/auth/logout` - Logout
+- `POST /api/v1/auth/refresh-token` - Renovar token
+
+### 🎓 Certificados Blockchain
+- `POST /api/v1/certificates/request` - Solicitar certificado
+- `GET /api/v1/certificates` - Listar certificados
+- `GET /api/v1/certificates/:id` - Obter certificado
+- `POST /api/v1/certificates/:id/approve` - Aprovar certificado
+- `POST /api/v1/certificates/:id/reject` - Rejeitar certificado
+- `POST /api/v1/certificates/:id/issue` - Emitir na blockchain
+- `GET /api/v1/certificates/verify/:hash` - Verificar certificado
+- `GET /api/v1/certificates/student/:studentId` - Certificados do aluno
+- `POST /api/v1/certificates/revoke/:hash` - Revogar certificado
+- `GET /api/v1/certificates/stats` - Estatísticas
+- `POST /api/v1/certificates/batch-approve` - Aprovação em lote
+
+### Outros Endpoints
+- `GET /api/v1/dashboard` - Dashboard
+- `GET /api/v1/students` - Gestão de alunos
+- `GET /api/v1/staffs` - Gestão de funcionários
+- `GET /api/v1/classes` - Gestão de turmas
+- `GET /api/v1/departments` - Gestão de departamentos
+
+## 🏗️ Arquitetura
+
+### Estrutura de Pastas
 ```
 src/
-├── config/                 # Configuration files
-│   ├── database.js        # Database connection setup
-│   └── env.js             # Environment variables
-├── middlewares/           # Express middlewares
-│   ├── auth.js            # Authentication middleware
-│   ├── csrf.js            # CSRF protection
-│   ├── error-handler.js   # Global error handling
-│   └── validation.js      # Request validation
-├── modules/               # Feature-based API modules
-│   ├── auth/              # Authentication endpoints
-│   │   ├── auth-controller.js
-│   │   ├── auth-service.js
-│   │   ├── auth-router.js
-│   │   └── auth-repository.js
-│   ├── students/          # Student management
-│   │   ├── students-controller.js
-│   │   ├── students-service.js
-│   │   ├── students-router.js
-│   │   └── students-repository.js
-│   ├── notices/           # Notice management
-│   ├── leave/             # Leave management
-│   ├── staff/             # Staff management
-│   └── departments/       # Department management
-├── routes/                # API route definitions
-│   ├── v1.js              # Version 1 API routes
-│   └── index.js           # Route aggregation
-├── shared/                # Shared utilities and repositories
-│   ├── repository/        # Common database operations
-│   ├── errors/            # Custom error classes
-│   └── validators/        # Shared validation schemas
-├── templates/             # Email templates
-│   ├── password-setup.html
-│   └── email-verification.html
-├── utils/                 # Utility functions
-│   ├── jwt-handle.js      # JWT operations
-│   ├── csrf-handle.js     # CSRF token handling
-│   ├── email-service.js   # Email sending utilities
-│   └── helpers.js         # General helper functions
-├── app.js                 # Express app configuration
-└── server.js              # Server entry point
+├── modules/
+│   ├── certificates/          # 🆕 Sistema de certificados
+│   │   ├── blockchain-service.js
+│   │   ├── ipfs-service.js
+│   │   ├── certificate-service.js
+│   │   ├── certificate-controller.js
+│   │   ├── certificate-repository.js
+│   │   └── certificate-router.js
+│   ├── auth/                  # Autenticação
+│   ├── students/              # Gestão de alunos
+│   └── ...
+├── config/                    # Configurações
+├── middlewares/               # Middlewares
+├── utils/                     # Utilitários
+└── routes/                    # Rotas principais
 ```
 
-## 🔐 Authentication & Security
+### 🔗 Arquitetura Blockchain
 
-### JWT Authentication
-- **Access Tokens**: Short-lived tokens (15 minutes) for API access
-- **Refresh Tokens**: Long-lived tokens (8 hours) for token renewal
-- **Token Rotation**: Automatic token refresh mechanism
-
-### Security Features
-- **CSRF Protection**: HMAC-based CSRF tokens
-- **Password Hashing**: Argon2 for secure password storage
-- **Role-Based Access Control**: Granular permissions system
-- **Request Validation**: Zod schema validation
-- **Secure Cookies**: HttpOnly, Secure, SameSite cookies
-
-### Authentication Flow
 ```
-1. User login → Validate credentials
-2. Generate access + refresh tokens
-3. Set secure HTTP-only cookies
-4. Client includes tokens in requests
-5. Middleware validates tokens
-6. Automatic token refresh when needed
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │    Backend      │    │   Blockchain    │
+│                 │    │                 │    │                 │
+│ • Conectar      │◄──►│ • Validação     │◄──►│ • Smart Contract│
+│   Carteira      │    │ • Aprovação     │    │ • Sepolia       │
+│ • Assinar       │    │ • IPFS Upload   │    │ • Verificação   │
+│   Transações    │    │ • Auditoria     │    │ • Eventos       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌─────────────────┐
+                       │      IPFS       │
+                       │                 │
+                       │ • Metadados     │
+                       │ • Templates     │
+                       │ • Imagens       │
+                       └─────────────────┘
 ```
 
-## 📚 API Documentation
+## 🎓 Fluxo de Certificados
 
-### Base URL
-```
-http://localhost:5007/api/v1
-```
+1. **Solicitação**: Admin cria solicitação de certificado
+2. **Validação**: Sistema valida dados do aluno e conquista
+3. **Aprovação**: Super-admin aprova/rejeita com comentários
+4. **Upload IPFS**: Metadados são enviados para IPFS
+5. **Blockchain**: Transação é enviada para Ethereum
+6. **Confirmação**: Certificado é confirmado na blockchain
+7. **Verificação**: Qualquer pessoa pode verificar autenticidade
 
-### Authentication Endpoints
+## 🔒 Segurança
 
-#### POST /auth/login
-Login user and get authentication tokens.
-```json
-{
-  "email": "admin@school-admin.com",
-  "password": "3OU4zn3q6Zh9"
-}
-```
+### Autenticação
+- JWT tokens com refresh
+- CSRF protection
+- Rate limiting
+- CORS configurado
 
-#### POST /auth/logout
-Logout user and invalidate tokens.
-```json
-{
-  "message": "Logged out successfully"
-}
-```
+### 🔗 Blockchain
+- Chaves privadas em variáveis de ambiente
+- Validação de transações
+- Controle de acesso por roles
+- Auditoria de todas as operações
 
-#### GET /auth/refresh
-Refresh access token using refresh token.
-```json
-{
-  "accessToken": "new_access_token",
-  "user": { "id": 1, "name": "Admin", "role": "admin" }
-}
-```
+## 🧪 Testes
 
-### Student Management Endpoints
-
-#### GET /students
-Get all students with pagination and filtering.
-```
-Query Parameters:
-- page: Page number (default: 1)
-- limit: Items per page (default: 10)
-- search: Search term
-- class: Filter by class
-- section: Filter by section
-```
-
-#### POST /students
-Create a new student.
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "class_name": "Grade 10",
-  "section_name": "A",
-  "roll": 101,
-  "dob": "2005-01-15",
-  "father_name": "Robert Doe",
-  "father_phone": "+1234567890"
-}
-```
-
-#### PUT /students/:id
-Update student information.
-```json
-{
-  "name": "John Smith",
-  "phone": "+1234567891"
-}
-```
-
-#### DELETE /students/:id
-Delete a student record.
-```json
-{
-  "message": "Student deleted successfully"
-}
-```
-
-### Notice Management Endpoints
-
-#### GET /notices
-Get all notices with filtering.
-```
-Query Parameters:
-- status: Filter by status (draft, published, archived)
-- author_id: Filter by author
-- recipient_type: Filter by recipient type
-```
-
-#### POST /notices
-Create a new notice.
-```json
-{
-  "title": "Important Announcement",
-  "description": "This is an important notice for all students.",
-  "recipient_type": "all",
-  "recipient_role_id": null
-}
-```
-
-#### PUT /notices/:id
-Update notice.
-```json
-{
-  "title": "Updated Announcement",
-  "description": "Updated notice content"
-}
-```
-
-#### DELETE /notices/:id
-Delete a notice.
-
-### Leave Management Endpoints
-
-#### GET /leave/requests
-Get leave requests with filtering.
-
-#### POST /leave/requests
-Submit a new leave request.
-```json
-{
-  "from_dt": "2024-01-15",
-  "to_dt": "2024-01-17",
-  "note": "Family emergency",
-  "leave_policy_id": 1
-}
-```
-
-#### PUT /leave/requests/:id/approve
-Approve a leave request.
-
-#### PUT /leave/requests/:id/reject
-Reject a leave request.
-
-### Staff Management Endpoints
-
-#### GET /staffs
-Get all staff members.
-
-#### POST /staffs
-Add new staff member.
-```json
-{
-  "name": "Jane Teacher",
-  "email": "jane@school.com",
-  "role_id": 2,
-  "department_id": 1,
-  "join_dt": "2024-01-01"
-}
-```
-
-## 🗄️ Database Schema
-
-### Key Tables
-- **users**: User accounts and basic information
-- **user_profiles**: Extended user profile data
-- **roles**: System roles and permissions
-- **classes**: Academic classes
-- **sections**: Class sections
-- **departments**: Organizational departments
-- **notices**: System notices and announcements
-- **user_leaves**: Leave requests and approvals
-- **access_controls**: Permission definitions
-- **permissions**: Role-permission mappings
-
-### Relationships
-- Users belong to roles
-- Users have profiles
-- Students belong to classes and sections
-- Staff belong to departments
-- Notices have authors and recipients
-- Leave requests belong to users
-
-## 🔧 Development Guidelines
-
-### Code Structure
-```javascript
-// Controller pattern
-const handleGetStudents = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 10, search } = req.query;
-  const result = await studentService.getStudents({ page, limit, search });
-  res.json(result);
-});
-
-// Service pattern
-const getStudents = async ({ page, limit, search }) => {
-  const offset = (page - 1) * limit;
-  return await studentRepository.findStudents({ offset, limit, search });
-};
-
-// Repository pattern
-const findStudents = async ({ offset, limit, search }) => {
-  const query = `
-    SELECT * FROM users u
-    JOIN user_profiles up ON u.id = up.user_id
-    WHERE u.role_id = $1
-    ${search ? 'AND u.name ILIKE $2' : ''}
-    LIMIT $3 OFFSET $4
-  `;
-  // Execute query and return results
-};
-```
-
-### Error Handling
-```javascript
-// Custom error classes
-class ApiError extends Error {
-  constructor(statusCode, message) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
-
-// Global error handler
-const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
-    success: false,
-    message: err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-};
-```
-
-### Validation
-```javascript
-// Zod schema validation
-const createStudentSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email'),
-  class_name: z.string().optional(),
-  section_name: z.string().optional(),
-  roll: z.number().int().positive().optional()
-});
-
-// Middleware usage
-const validateCreateStudent = (req, res, next) => {
-  try {
-    createStudentSchema.parse(req.body);
-    next();
-  } catch (error) {
-    throw new ApiError(400, 'Validation failed');
-  }
-};
-```
-
-## 🧪 Testing
-
-### Running Tests
 ```bash
-# Run all tests
+# Executar testes
 npm test
 
-# Run tests in watch mode
-npm run test:watch
-
-# Generate coverage report
+# Testes com coverage
 npm run test:coverage
+
+# Testar conexão blockchain
+node scripts/test-blockchain.js
 ```
 
-### Test Structure
-```javascript
-// Example test
-describe('Student Controller', () => {
-  describe('GET /students', () => {
-    it('should return paginated students', async () => {
-      const response = await request(app)
-        .get('/api/v1/students')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-      
-      expect(response.body.data).toBeInstanceOf(Array);
-      expect(response.body.pagination).toBeDefined();
-    });
-  });
-});
-```
+## 📝 Logs
 
-## 🚀 Deployment
+Os logs são salvos em:
+- Console (desenvolvimento)
+- Arquivo `logs/app.log` (produção)
+- Eventos blockchain são auditados no banco
 
-### Production Build
+## 🚀 Deploy
+
+### Preparação
+1. Configure todas as variáveis de ambiente
+2. Execute migrations do banco
+3. Faça deploy do smart contract
+4. Configure IPFS
+
+### Produção
 ```bash
-# Install production dependencies
-npm ci --only=production
+# Build
+npm run build
 
-# Start production server
-NODE_ENV=production npm start
+# Start
+npm start
 ```
 
-### Docker Deployment
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-EXPOSE 5007
-CMD ["npm", "start"]
-```
+## 🤝 Contribuição
 
-### Environment Setup
-- Set up PostgreSQL database
-- Configure environment variables
-- Set up SSL certificates for HTTPS
-- Configure reverse proxy (Nginx)
-- Set up monitoring and logging
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
 
-## 🐛 Known Issues & Solutions
+## 📄 Licença
 
-### Issue 1: Student CRUD Operations Incomplete
-**Problem**: Some CRUD operations for students are missing or incomplete.
-**Location**: `/src/modules/students/students-controller.js`
-**Solution**: 
-- Implement missing endpoints (CREATE, UPDATE, DELETE)
-- Add proper validation and error handling
-- Test all operations thoroughly
+Este projeto está sob a licença MIT.
 
-### Issue 2: Notice Description Not Saving
-**Problem**: Notice description field not being saved properly.
-**Location**: `/src/modules/notices/notices-service.js`
-**Solution**: 
-- Check database query parameters
-- Verify request body parsing
-- Add proper validation for description field
+## 🆘 Suporte
 
-## 📊 Performance Considerations
-
-### Database Optimization
-- Use connection pooling
-- Implement proper indexing
-- Use prepared statements
-- Optimize complex queries
-
-### Caching Strategy
-- Implement Redis for session storage
-- Cache frequently accessed data
-- Use ETags for conditional requests
-
-### Security Best Practices
-- Regular security audits
-- Keep dependencies updated
-- Implement rate limiting
-- Use HTTPS in production
-
-## 📄 Scripts Reference
-
-| Script | Description |
-|--------|-------------|
-| `npm start` | Start production server |
-| `npm run dev` | Start development server with nodemon |
-| `npm test` | Run test suite |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format code with Prettier |
+Para suporte, entre em contato:
+- Email: support@school-mgmt.com
+- Issues: GitHub Issues
 
 ---
 
-For frontend documentation, see [../frontend/README.md](../frontend/README.md)
+## 🎯 Próximas Funcionalidades
+
+- [ ] Interface Web3 no frontend
+- [ ] Suporte a múltiplas redes
+- [ ] NFTs para certificados especiais
+- [ ] Integração com carteiras móveis
+- [ ] API pública de verificação
+- [ ] Dashboard de analytics blockchain

@@ -1,15 +1,26 @@
-# Student Management System - Developer Skill Test
+# Student Management System with Blockchain Certificates - Developer Skill Test
 
-A comprehensive full-stack web application for managing school operations including students, staff, classes, notices, and leave management. This project serves as a skill assessment platform for **Frontend**, **Backend**, and **Blockchain** developers.
+A comprehensive full-stack web application for managing school operations including students, staff, classes, notices, leave management, and **blockchain-based certificate verification**. This project serves as a skill assessment platform for **Frontend**, **Backend**, and **Blockchain** developers.
+
+## 🎯 **SISTEMA COMPLETO IMPLEMENTADO**
+✅ **Sistema de Certificados Blockchain totalmente funcional**
+✅ **Smart Contract deployado na Sepolia Testnet**
+✅ **Integração IPFS para armazenamento de metadados**
+✅ **API completa para gerenciamento de certificados**
+✅ **Interface de usuário para certificados**
 
 ## 🏗️ Project Architecture
 
 ```
 skill-test/
 ├── frontend/           # React + TypeScript + Material-UI
-├── backend/            # Node.js + Express + PostgreSQL
+├── backend/            # Node.js + Express + PostgreSQL + Blockchain
+│   ├── contracts/      # Smart contracts (Solidity)
+│   ├── scripts/        # Deployment and blockchain scripts
+│   └── src/modules/certificates/  # Blockchain certificate system
 ├── go-service/         # Golang microservice for PDF reports
 ├── seed_db/           # Database schema and seed data
+├── start-system.sh    # Automated system startup script
 └── README.md          # This file
 ```
 
@@ -20,36 +31,55 @@ skill-test/
 - PostgreSQL (v12 or higher)
 - npm or yarn
 
-### 1. Backend Setup
+### 🎯 **INICIALIZAÇÃO AUTOMÁTICA (RECOMENDADO)**
 ```bash
-cd backend
-npm install
-cp .env.example .env  # Configure your environment variables
-npm start
+# Usar o script automatizado para iniciar todo o sistema
+chmod +x start-system.sh
+./start-system.sh start
 ```
 
-### 2. Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
+**⚠️ IMPORTANTE: Senha do PostgreSQL**
+Quando solicitado: `Password for user jistriane:` digite: **`dev123`**
 
-### 3. Access the Application
+### 🔐 **Credenciais do Sistema**
+- **Email**: `admin@school-admin.com`
+- **Senha**: `30U4zn3q6Zh9`
+- **PostgreSQL User**: `jistriane`
+- **PostgreSQL Password**: `dev123`
+
+### 📊 **URLs de Acesso**
 - **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5007
-- **Demo Credentials**: 
-  - Email: `admin@school-admin.com`
-  - Password: `3OU4zn3q6Zh9`
+- **Backend API**: http://localhost:5000/api/v1
+- **Certificados API**: http://localhost:5000/api/v1/certificates
 
-### ** Database Setup **
+### 💻 **Configuração Manual (Alternativa)**
+
+#### 1. Database Setup
 ```bash
 # Create PostgreSQL database
 createdb school_mgmt
 
+# Configure PostgreSQL user
+sudo -u postgres psql -c "ALTER USER jistriane PASSWORD 'dev123';"
+
 # Run database migrations
-psql -d school_mgmt -f seed_db/tables.sql
-psql -d school_mgmt -f seed_db/seed-db.sql
+psql -h localhost -U jistriane -d school_mgmt -f seed_db/tables.sql
+psql -h localhost -U jistriane -d school_mgmt -f seed_db/seed-db.sql
+```
+
+#### 2. Backend Setup
+```bash
+cd backend
+npm install
+cp .env-example .env  # Configure your environment variables
+npm run dev
+```
+
+#### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
 ## 🎯 Skill Test Problems
@@ -68,15 +98,25 @@ psql -d school_mgmt -f seed_db/seed-db.sql
 - **Skills Tested**: Node.js, Express, PostgreSQL, API design, Error handling
 - **Expected Implementation**: Full Create, Read, Update, Delete operations
 
-### **Problem 3: Blockchain Developer Challenge**
-**Implement Certificate Verification System**
-- **Objective**: Add blockchain-based certificate verification for student achievements
-- **Skills Tested**: Smart contracts, Web3 integration, Ethereum/Polygon
-- **Requirements**:
-  - Create smart contract for certificate issuance and verification
-  - Integrate Web3 wallet connection in frontend
-  - Add certificate management in admin panel
-  - Implement IPFS for certificate metadata storage
+### **Problem 3: Blockchain Developer Challenge** ✅ **IMPLEMENTADO**
+**Certificate Verification System - SISTEMA COMPLETO**
+- **Status**: ✅ **TOTALMENTE IMPLEMENTADO E FUNCIONAL**
+- **Smart Contract**: Deployado na Sepolia Testnet
+- **Endereço**: `0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9`
+- **IPFS**: Integrado com fallback local
+- **APIs Implementadas**:
+  - ✅ `POST /api/v1/certificates/request` - Criar solicitação
+  - ✅ `PUT /api/v1/certificates/approve` - Aprovar certificado
+  - ✅ `POST /api/v1/certificates/issue` - Emitir na blockchain
+  - ✅ `GET /api/v1/certificates/verify` - Verificar autenticidade
+  - ✅ `PUT /api/v1/certificates/revoke` - Revogar certificado
+  - ✅ `GET /api/v1/certificates` - Listar certificados
+- **Funcionalidades**:
+  - ✅ Emissão de certificados na blockchain
+  - ✅ Verificação criptográfica
+  - ✅ Armazenamento IPFS de metadados
+  - ✅ Interface administrativa completa
+  - ✅ Histórico de transações blockchain
 
 ### **Problem 4: Golang Developer Challenge**
 **Build PDF Report Generation Microservice via API Integration**
@@ -120,6 +160,11 @@ psql -d school_mgmt -f seed_db/seed-db.sql
 - **Password Hashing**: Argon2
 - **Email Service**: Resend API
 - **Validation**: Zod
+- **Blockchain**: Ethereum (Sepolia Testnet)
+- **Smart Contracts**: Solidity + Hardhat
+- **Web3**: ethers.js v5
+- **IPFS**: Integrated with fallback
+- **Certificate System**: Complete blockchain verification
 
 ### Database
 - **Primary DB**: PostgreSQL
@@ -136,6 +181,13 @@ psql -d school_mgmt -f seed_db/seed-db.sql
 - **Notice System**: Create, approve, and distribute notices
 - **Staff Management**: Employee profiles, departments, role assignments
 - **Access Control**: Granular permissions system
+- **🔗 Certificate System**: Complete blockchain-based certificate management
+  - Certificate request and approval workflow
+  - Blockchain issuance with smart contracts
+  - IPFS metadata storage
+  - Cryptographic verification
+  - Certificate revocation system
+  - Public verification portal
 
 ### Security Features
 - JWT-based authentication with refresh tokens
@@ -178,6 +230,12 @@ backend/src/
 │   ├── auth/      # Authentication endpoints
 │   ├── students/  # Student CRUD operations
 │   ├── notices/   # Notice management
+│   ├── certificates/  # 🔗 Blockchain certificate system
+│   │   ├── blockchain-service.js    # Ethereum integration
+│   │   ├── ipfs-service.js         # IPFS file storage
+│   │   ├── certificate-service.js  # Main certificate logic
+│   │   ├── certificate-controller.js # API endpoints
+│   │   └── certificate-repository.js # Database operations
 │   └── ...
 ├── routes/        # API route definitions
 ├── shared/        # Shared utilities and repositories
@@ -199,11 +257,25 @@ backend/src/
 3. Check database constraints and relationships
 4. Test authentication and authorization
 
-### For Blockchain Developers
-1. Set up local blockchain environment (Hardhat/Ganache)
-2. Deploy certificate smart contract
-3. Integrate Web3 wallet connection
-4. Test certificate issuance and verification flow
+### For Blockchain Developers ✅ **SISTEMA IMPLEMENTADO**
+**O sistema blockchain está totalmente funcional! Para testar:**
+
+1. **Iniciar o sistema**: `./start-system.sh start`
+2. **Testar conexão blockchain**: `./start-system.sh test-blockchain`
+3. **Verificar contrato**: `./start-system.sh verify-contract`
+4. **Testar APIs de certificados**:
+   ```bash
+   # Listar certificados
+   curl http://localhost:5000/api/v1/certificates
+   
+   # Verificar configuração blockchain
+   curl http://localhost:5000/api/v1/blockchain/config
+   ```
+
+**🔗 Smart Contract Deployado:**
+- **Rede**: Sepolia Testnet
+- **Endereço**: `0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9`
+- **Explorador**: https://sepolia.etherscan.io/address/0xB2ca8Ab7ca66b0899f5c6A810d4da4444261ECd9
 
 ### For Golang Developers
 1. Set up the PostgreSQL database using `seed_db/` files.
@@ -239,8 +311,112 @@ backend/src/
 - `PUT /api/v1/notices/:id` - Update notice
 - `DELETE /api/v1/notices/:id` - Delete notice
 
+### 🔗 **Certificate Management (Blockchain)**
+- `GET /api/v1/certificates` - List all certificates
+- `POST /api/v1/certificates/request` - Create certificate request
+- `PUT /api/v1/certificates/approve` - Approve certificate for issuance
+- `POST /api/v1/certificates/issue` - Issue certificate to blockchain
+- `GET /api/v1/certificates/verify` - Verify certificate authenticity
+- `PUT /api/v1/certificates/revoke` - Revoke certificate on blockchain
+- `GET /api/v1/certificate-types` - Manage certificate types
+- `GET /api/v1/blockchain/config` - Get blockchain configuration
+
 ### PDF Generation Service (Go)
 - `GET /api/v1/students/:id/report` - Generate and download a PDF report for a specific student.
+
+## 🛠️ **Comandos do Sistema**
+
+### Script de Inicialização Automática
+```bash
+# Iniciar sistema completo
+./start-system.sh start
+
+# Iniciar apenas backend
+./start-system.sh backend
+
+# Iniciar apenas frontend  
+./start-system.sh frontend
+
+# Ver status dos serviços
+./start-system.sh status
+
+# Parar todos os serviços
+./start-system.sh stop
+
+# Reiniciar sistema completo
+./start-system.sh restart
+```
+
+### Comandos Blockchain
+```bash
+# Compilar smart contract
+./start-system.sh compile-contract
+
+# Fazer deploy do contrato
+./start-system.sh deploy-contract
+
+# Verificar contrato existente
+./start-system.sh verify-contract
+
+# Testar conexão blockchain
+./start-system.sh test-blockchain
+```
+
+### Comandos de Banco de Dados
+```bash
+# Instalar schema de certificados
+./start-system.sh setup-db
+
+# Conectar ao banco manualmente
+psql -h localhost -U jistriane -d school_mgmt
+```
+
+### Comandos de Ajuda
+```bash
+# Ver todos os comandos disponíveis
+./start-system.sh help
+```
+
+## 🔧 **Troubleshooting**
+
+### Problemas Comuns
+
+**1. Erro de Senha do PostgreSQL**
+```
+Password for user jistriane:
+```
+**Solução**: Digite `dev123`
+
+**2. Porta já em uso**
+```
+Error: listen EADDRINUSE: address already in use :::5000
+```
+**Solução**: 
+```bash
+./start-system.sh stop
+./start-system.sh start
+```
+
+**3. Erro de conexão blockchain**
+```
+Error: BLOCKCHAIN_RPC_URL não configurada
+```
+**Solução**: Verifique as variáveis de ambiente em `backend/.env`
+
+**4. Frontend não carrega**
+```
+Failed to construct 'Request': Failed to parse URL
+```
+**Solução**: Já corrigido! Reinicie o sistema com `./start-system.sh restart`
+
+### Logs do Sistema
+```bash
+# Ver logs do backend
+tail -f backend/logs/app.log
+
+# Ver status em tempo real
+watch './start-system.sh status'
+```
 
 ## 🤝 Contributing
 

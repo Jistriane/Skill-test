@@ -26,7 +26,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   openNavMenu
 }) => {
   const menus = useSelector(getUserMenus);
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL?.replace('/api/v1', '') || 'http://localhost:5000';
 
   return (
     <div>
@@ -45,7 +45,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
                 <Box key={name}>
                   <ListItemButton onClick={() => handleNavigationClick(name)}>
                     <ListItemIcon>
-                      <img width='20px' height='20px' src={`${API_URL}/${icon}`} />
+                      <img width='20px' height='20px' src={`${API_URL}/${icon}`} alt={`${name} icon`} />
                     </ListItemIcon>
                     <ListItemText primary={name} />
                     {openNavMenu === name ? <ArrowDropDown /> : <ArrowRight />}
@@ -70,7 +70,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
               return (
                 <ListItemButton key={name} component={Link} to={`/app/${path}`}>
                   <ListItemIcon>
-                    <img width='20px' height='20px' src={`${API_URL}/${icon}`} />
+                    <img width='20px' height='20px' src={`${API_URL}/${icon}`} alt={`${name} icon`} />
                   </ListItemIcon>
                   <ListItemText primary={name} />
                 </ListItemButton>
